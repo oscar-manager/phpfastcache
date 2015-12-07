@@ -243,9 +243,13 @@ class phpFastCache {
             }
             if(!@file_exists($path."/.htaccess")) {
                 //   echo "write me";
-                $html = "order deny, allow \r\n
-deny from all \r\n
-allow from 127.0.0.1";
+                $html = "<IfModule mod_authz_host>\r\n
+        Require all denied\r\n
+</IfModule>\r\n
+<IfModule !mod_authz_host>\r\n
+	Order Allow,Deny\r\n
+	Deny from all\r\n
+</IfModule>";
 
                 $f = @fopen($path."/.htaccess","w+");
                 if(!$f) {
